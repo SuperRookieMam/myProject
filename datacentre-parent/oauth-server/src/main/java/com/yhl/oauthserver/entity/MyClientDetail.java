@@ -3,9 +3,14 @@ package com.yhl.oauthserver.entity;
 import com.yhl.base.baseEntity.BaseEntity;
 import lombok.Data;
 import org.springframework.data.domain.Persistable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -14,7 +19,7 @@ import java.util.Set;
 @Entity
 @Table(name ="my_client_detail")
 @Data
-public class MyClientDetail extends BaseEntity<String> implements Persistable<String>, Serializable {
+public class MyClientDetail extends BaseEntity<String>  implements Persistable<String>,ClientDetails,Serializable {
 
     private static final long serialVersionUID = -6186893015772300645L;
 
@@ -78,6 +83,30 @@ public class MyClientDetail extends BaseEntity<String> implements Persistable<St
 
     @Override
     public boolean isNew() {
+        return StringUtils.isEmpty(clientId);
+    }
+    @Override
+    public boolean isSecretRequired() {
         return false;
+    }
+
+    @Override
+    public boolean isScoped() {
+        return false;
+    }
+
+    @Override
+    public Collection<GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public boolean isAutoApprove(String s) {
+        return false;
+    }
+
+    @Override
+    public Map<String, Object> getAdditionalInformation() {
+        return null;
     }
 }

@@ -26,8 +26,8 @@ public class OAuthServerConfigurer   extends AuthorizationServerConfigurerAdapte
   private UserApprovalStoreService userApprovalStoreService;
   @Autowired
   private MyAuthorizationServerTokenService myAuthorizationServerTokenService;
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+  @Override
+  public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // 通过自定义的service来存储客户端信息
         clients.withClientDetails(myClientDetailService);
     }
