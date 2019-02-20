@@ -3,12 +3,15 @@ package com.yhl.oauthserver.entity;
 import com.yhl.base.baseEntity.BaseEntity;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *Security 对user用户权限管理
@@ -45,36 +48,38 @@ public class YhlUserDetails extends BaseEntity<String> implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<SimpleGrantedAuthority> list = new ArrayList<>();
+        list.add(new SimpleGrantedAuthority(role));
+        return list;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return userName;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return isExpired==0;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return isLocked==1;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return credentia==null;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return isEnable==1;
     }
 }

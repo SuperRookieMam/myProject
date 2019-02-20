@@ -27,11 +27,12 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
           /*多HttpSecurity配置时必须设置这个，除最后一个外，
           因为不设置的话默认匹配所有，就不会执行到下面的HttpSecurity了*/
-        http.antMatcher("/**");//设置最顶顶级的路径
+        //http.antMatcher("/**");//设置最顶顶级的路径
+
         http.authorizeRequests()//获取子路径链条，设置子路径的行为
-                .antMatchers("/","/").permitAll()//这些子路径允许通过，不验证（不是通过）
-                .antMatchers("/","/").access("hasRole('ADMIN') and hasRole('DBA')")
-                .anyRequest().authenticated();//其他路径，设置为已通过经验证状态
+                //.antMatchers("/static/**","/oauth/static/**").permitAll()//允许static下面的资源请求
+                //.antMatchers("/","/").access("hasRole('ADMIN') and hasRole('DBA')")
+                .anyRequest().authenticated();// 指定任何经过身份验证的用户都允许url。
         /**CSRF（Cross-site request forgery）跨站请求伪造，
          * 由于目标站无token/referer限制，
          * 导致攻击者可以用户的身份完成操作达到各种目的。
