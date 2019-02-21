@@ -8,8 +8,7 @@ import org.springframework.security.oauth2.provider.approval.Approval;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name = "user_approval_store",uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id","client_id","scope"})})
@@ -41,6 +40,21 @@ public class UserApprovalStore extends BaseEntity<String> implements Serializabl
 
     @Column(name = "last_update_at")
     @LastModifiedDate
-    private ZonedDateTime lastUpdatedAt;
+    private Date lastUpdatedAt;
 
+    public  static List<UserApprovalStore> approvalToUserApprovalStore(Collection collection){
+        List<UserApprovalStore> list=new ArrayList<>();
+        Iterator<Approval> iterator = collection.iterator();
+        while (iterator.hasNext()){
+            Approval approval =iterator.next();
+            UserApprovalStore userApprovalStore =new UserApprovalStore();
+            userApprovalStore.setClientId(approval.getClientId());
+            userApprovalStore.setExpiresAt(approval.getExpiresAt());
+            userApprovalStore.setLastUpdatedAt(approval.getLastUpdatedAt());
+            userApprovalStore.setScope(approval.getScope());
+            userApprovalStore.setUserId(approval.getUserId());
+            list.add(userApprovalStore);
+        }
+        return list;
+    }
 }
