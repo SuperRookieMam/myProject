@@ -26,18 +26,30 @@ public class OAuthServerConfigurer   extends AuthorizationServerConfigurerAdapte
   private UserApprovalStoreService userApprovalStoreService;
   @Autowired
   private MyAuthorizationServerTokenService myAuthorizationServerTokenService;
+
+
+  /**/
   @Override
   public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // 通过自定义的service来存储客户端信息
         clients.withClientDetails(myClientDetailService);
     }
+
+  // auth自带security配置
   @Override
   public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
     super.configure(security);
-    security.checkTokenAccess("isAuthenticated()"); // 开启/oauth/check_token验证端口认证权限访问
-    security.allowFormAuthenticationForClients();//允许对客户机进行表单身份验证
-    //security.tokenKeyAccess("permitAll()");// 开启/oauth/token_key验证端口无权限访问
+    // 开启/oauth/check_token验证端口认证权限访问
+    security.checkTokenAccess("isAuthenticated()");
+    //允许对客户机进行表单身份验证
+    security.allowFormAuthenticationForClients();
+    // 开启/oauth/token_key验证端口无权限访问
+    //security.tokenKeyAccess("permitAll()");
   }
+  /**
+   * 如果要配置自定的请求controller
+   * 可以自定实现AuthorizationServerEndpointsConfigurer 来返回
+   * */
   @Override
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
       super.configure(endpoints);

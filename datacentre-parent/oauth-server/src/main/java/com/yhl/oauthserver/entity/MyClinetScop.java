@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "my_clinet_scop") //
+@Table(name = "my_clinet_scop")
 @Data
 public class MyClinetScop extends BaseEntity<String> implements Serializable{
     private static final long serialVersionUID = -6444299595553304443L;

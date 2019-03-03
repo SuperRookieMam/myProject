@@ -1,6 +1,9 @@
 package com.yhl.oauthserver.service.impl;
 
 import com.yhl.oauthserver.service.MyAuthorizationServerTokenService;
+import com.yhl.oauthserver.service.MyClientDetailService;
+import com.yhl.oauthserver.service.MyTokenStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -36,16 +39,20 @@ public class MyAuthorizationServerTokenServiceImpl implements MyAuthorizationSer
     private boolean supportRefreshToken = false;
 
     private boolean reuseRefreshToken = true;
-
-    private TokenStore tokenStore;
-
-    private ClientDetailsService clientDetailsService;
-
+    @Autowired
+    private MyTokenStore tokenStore;
+    @Autowired
+    private MyClientDetailService clientDetailsService;
+    // 在token被存储之前按对token的增强策略
     private TokenEnhancer accessTokenEnhancer;
 
     private AuthenticationManager authenticationManager;
 
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        Assert.notNull(tokenStore, "tokenStore must be set");
+    }
     //创建token
     @Override
     @Transactional(value ="transactionManagerPrimary")
@@ -295,4 +302,5 @@ public class MyAuthorizationServerTokenServiceImpl implements MyAuthorizationSer
         narrowed = new OAuth2Authentication(clientAuth, authentication.getUserAuthentication());
         return narrowed;
     }
+
 }
