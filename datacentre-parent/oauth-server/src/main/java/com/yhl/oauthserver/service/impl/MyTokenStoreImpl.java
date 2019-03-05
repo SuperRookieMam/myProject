@@ -5,6 +5,8 @@ import com.yhl.oauthserver.service.MyTokenStore;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
+import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -14,6 +16,7 @@ import java.util.Collection;
 @Service
 public class MyTokenStoreImpl implements MyTokenStore {
 
+    private AuthenticationKeyGenerator authenticationKeyGenerator = new DefaultAuthenticationKeyGenerator();
     @Override
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
         return readAuthentication(token.getValue());
@@ -21,7 +24,6 @@ public class MyTokenStoreImpl implements MyTokenStore {
     /**
      * 自定义的Token准备是这个格式
      * {
-     *  type: user或者clinet
      *  clinentId：xxxx,
      *  userId: xxxx,
      *  password:XXXXX，
@@ -81,6 +83,11 @@ public class MyTokenStoreImpl implements MyTokenStore {
 
     @Override
     public OAuth2AccessToken getAccessToken(OAuth2Authentication authentication) {
+        OAuth2AccessToken accessToken = null;
+        //提取KEY值oauth默认MD5解密
+        String key = authenticationKeyGenerator.extractKey(authentication);
+
+
         return null;
     }
 

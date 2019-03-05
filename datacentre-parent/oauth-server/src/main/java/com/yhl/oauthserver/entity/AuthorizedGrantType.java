@@ -28,10 +28,4 @@ public class AuthorizedGrantType extends BaseEntity<String> implements Serializa
     @Column(name = "grant_type", nullable = false, length = 50)
     private String grantType;
 
-    @Column(name = "register_url", nullable = false, length = 50)
-    private String registerUrl;
-
-
-
-
 }

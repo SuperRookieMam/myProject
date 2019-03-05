@@ -1,14 +1,14 @@
 package com.yhl.oauthserver.entity;
 
+import com.yhl.authoritycommom.entity.Department;
+import com.yhl.authoritycommom.entity.RoleInfo;
 import com.yhl.base.baseEntity.BaseEntity;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,10 +17,9 @@ import java.util.List;
  *Security 对user用户权限管理
  * */
 @Entity
-@Table(name = "Yhl_user_details")
+@Table(name = "yhl_user_details")
 @Data
 public class YhlUserDetails extends BaseEntity<String> implements UserDetails {
-
 
     private static final long serialVersionUID = 5284636444102939763L;
 
@@ -30,8 +29,12 @@ public class YhlUserDetails extends BaseEntity<String> implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "nick_name")
+    private String nickName;
+
+    @ManyToOne
     @Column(name = "role")
-    private String role;
+    private RoleInfo role;
 
     @Column(name = "is_expired")
     private Integer isExpired;
@@ -49,7 +52,7 @@ public class YhlUserDetails extends BaseEntity<String> implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> list = new ArrayList<>();
-        list.add(new SimpleGrantedAuthority(role));
+        /*list.add(new SimpleGrantedAuthority(role));*/
         return list;
     }
 
@@ -82,4 +85,5 @@ public class YhlUserDetails extends BaseEntity<String> implements UserDetails {
     public boolean isEnabled() {
         return isEnable==1;
     }
+
 }

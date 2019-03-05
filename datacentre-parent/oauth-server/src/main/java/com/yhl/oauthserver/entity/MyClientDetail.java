@@ -10,10 +10,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 自定义客户端信息
@@ -25,6 +22,7 @@ public class MyClientDetail extends BaseEntity<String>  implements Persistable<S
 
     private static final long serialVersionUID = -6186893015772300645L;
 
+    //此客户端可以访问的资源。如果为空，调用方可以忽略。
     @Column(name = "client_id", nullable = false, length = 50)
     private String clientId;
 
@@ -114,6 +112,6 @@ public class MyClientDetail extends BaseEntity<String>  implements Persistable<S
      * */
     @Override // ClientDetails
     public Map<String, Object> getAdditionalInformation() {
-        return null;
+        return new HashMap<>();
     }
 }
