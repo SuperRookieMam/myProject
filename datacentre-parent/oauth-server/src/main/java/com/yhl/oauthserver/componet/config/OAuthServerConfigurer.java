@@ -1,7 +1,7 @@
 package com.yhl.oauthserver.componet.config;
 
 ;
-import com.yhl.oauthserver.service.MyAuthorizationServerTokenService;
+import com.yhl.oauthserver.service.AuthorizationServerTokenService;
 import com.yhl.oauthserver.service.MyClientDetailService;
 import com.yhl.oauthserver.service.UserApprovalStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class OAuthServerConfigurer   extends AuthorizationServerConfigurerAdapte
   @Autowired
   private UserApprovalStoreService userApprovalStoreService;
   @Autowired
-  private MyAuthorizationServerTokenService myAuthorizationServerTokenService;
+  private AuthorizationServerTokenService authorizationServerTokenService;
 
 
   /**/
@@ -54,7 +54,7 @@ public class OAuthServerConfigurer   extends AuthorizationServerConfigurerAdapte
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
       super.configure(endpoints);
     //自定义了对AccessToken的相关操作创建、刷新、获取
-    endpoints.tokenServices(myAuthorizationServerTokenService);
+    endpoints.tokenServices(authorizationServerTokenService);
     //对用户端，权限，作用于的控制
     endpoints.userApprovalHandler(userApprovalHandler());
 

@@ -5,7 +5,7 @@ import org.springframework.security.oauth2.provider.token.AuthorizationServerTok
 import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 
-public interface MyAuthorizationServerTokenService extends AuthorizationServerTokenServices, ResourceServerTokenServices,
+public interface AuthorizationServerTokenService extends AuthorizationServerTokenServices, ResourceServerTokenServices,
         ConsumerTokenServices, InitializingBean {
 
 

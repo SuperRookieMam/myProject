@@ -1,6 +1,6 @@
 package com.yhl.oauthserver.service.impl;
 
-import com.yhl.oauthserver.service.MyAuthorizationServerTokenService;
+import com.yhl.oauthserver.service.AuthorizationServerTokenService;
 import com.yhl.oauthserver.service.MyClientDetailService;
 import com.yhl.oauthserver.service.MyTokenStore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.common.exceptions.InvalidScopeExcepti
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,7 @@ import java.util.UUID;
  * 这时自定义token的增删改查实现的时候，参考ownerdefaultToken，
  * */
 @Service
-public class MyAuthorizationServerTokenServiceImpl implements MyAuthorizationServerTokenService {
+public class AuthorizationServerTokenServiceImpl implements AuthorizationServerTokenService {
     private static final String YHL_APP = "yhlapp";
 
     private int refreshTokenValiditySeconds = 60 * 60 * 24 * 30; // default 30 days.

@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
 @Configuration
@@ -48,7 +49,28 @@ public class OauthServerConfigurers extends AuthorizationServerConfigurerAdapter
      */
     @Override
      public void configure(AuthorizationServerSecurityConfigurer security) throws Exception{
+           // 开启表单验证
 
+        // 通常情况下,Spring Security获取token的认证模式是基于http basic的,
+        // 也就是client的client_id和client_secret是通过http的header或者url模式传递的，
+        // 也就是通过http请求头的 Authorization传递，具体的请参考http basic
+        // 或者http://client_id:client_secret@server/oauth/token的模式传递的
+        // 当启用这个配置之后，server可以从表单参数中获取相应的client_id和client_secret信息
+        // 默认情况下，checkToken的验证时denyAll的，需要手动开启
+           security.checkTokenAccess("isAuthenticated()");
+           security.allowFormAuthenticationForClients();
      }
+
+
+    /**
+     * Configure the non-security features of the Authorization Server endpoints,
+     * like token store, token customizations, user approvals and grant types.
+     * You shouldn't need to do anything by default, unless you need
+     * password grants, in which case you need to provide an {@link AuthenticationManager}.
+     */
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception{
+
+    }
+
 
 }
