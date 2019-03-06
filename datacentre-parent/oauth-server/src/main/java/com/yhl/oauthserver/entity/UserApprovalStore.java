@@ -42,6 +42,10 @@ public class UserApprovalStore extends BaseEntity<String> implements Serializabl
     @LastModifiedDate
     private Date lastUpdatedAt;
 
+    @Column(name = "organization_id")
+    private String organizationId;
+
+
     public  static List<UserApprovalStore> approvalToUserApprovalStore(Collection collection){
         List<UserApprovalStore> list=new ArrayList<>();
         Iterator<Approval> iterator = collection.iterator();

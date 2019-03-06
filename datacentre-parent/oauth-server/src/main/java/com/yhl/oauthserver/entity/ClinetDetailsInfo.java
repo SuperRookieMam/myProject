@@ -1,7 +1,8 @@
 package com.yhl.oauthserver.entity;
 
 import com.yhl.base.baseEntity.BaseEntity;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.util.StringUtils;
@@ -11,9 +12,11 @@ import java.util.*;
 
 @Entity
 @Table(name ="clinet_details_info")
-@Data
+@Getter
+@Setter
 public class ClinetDetailsInfo extends BaseEntity<String> implements ClientDetails{
 
+    private static final long serialVersionUID = -6981484509412993417L;
     @Column(name = "client_id", nullable = false, length = 50)
     private String clientId;
 
@@ -62,6 +65,9 @@ public class ClinetDetailsInfo extends BaseEntity<String> implements ClientDetai
 
     @Column(name = "auto_approve", nullable = false)
     private boolean autoApprove = false;
+
+    @Column(name = "organization_id")
+    private String organizationId;
 
     @Override
     public String getClientId() {

@@ -62,7 +62,6 @@ public class UserApprovalStoreServiceImpl extends BaseServiceImpl<UserApprovalSt
         WhereCondition whereCondition =new WhereCondition();
         whereCondition.and().addEq("userId",userId)
                             .addEq("clientId",clientId);
-
         Object object =findByParams(whereCondition).getData();
         return (List)object;
     }

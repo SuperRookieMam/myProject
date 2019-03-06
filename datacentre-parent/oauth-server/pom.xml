@@ -23,12 +23,10 @@
         <dependency>
             <groupId>com.yhl</groupId>
             <artifactId>yhl-authority-common</artifactId>
-            <version>${yhl-componet.version}</version>
         </dependency>
         <dependency>
             <groupId>com.yhl</groupId>
             <artifactId>yhl-security-common</artifactId>
-            <version>${yhl-componet.version}</version>
         </dependency>
     </dependencies>
 
