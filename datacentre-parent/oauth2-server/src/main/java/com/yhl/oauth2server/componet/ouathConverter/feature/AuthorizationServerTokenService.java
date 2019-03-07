@@ -40,7 +40,6 @@ public class AuthorizationServerTokenService  implements AuthorizationServerToke
     private TokenEnhancer accessTokenEnhancer;
 
     private AuthenticationManagerConverter authenticationManager;
-
     /**
      * Initialize these token services. If no random generator is set, one will be created.
      */
@@ -63,8 +62,7 @@ public class AuthorizationServerTokenService  implements AuthorizationServerToke
                     tokenStore.removeRefreshToken(refreshToken);
                 }
                 tokenStore.removeAccessToken(existingAccessToken);
-            }
-            else {
+            }else {
                 // Re-store the access token in case the authentication has changed
                 tokenStore.storeAccessToken(existingAccessToken, authentication);
                 return existingAccessToken;

@@ -5,13 +5,17 @@ import com.yhl.oauth2server.entity.AccessToken;
 import com.yhl.oauth2server.service.ClientInfoService;
 import com.yhl.oauth2server.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.support.SqlLobValue;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
+import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.sql.Types;
 import java.util.Collection;
 
 /***
@@ -25,6 +29,9 @@ public class YhlTokenStore implements TokenStore {
     private ClientInfoService clientInfoService;
     @Autowired
     private AccessTokenDao accessTokenDao;
+    //使用默认的MD5解密
+    private AuthenticationKeyGenerator authenticationKeyGenerator = new DefaultAuthenticationKeyGenerator();
+
     @Override
     public OAuth2Authentication readAuthentication(OAuth2AccessToken token) {
         return readAuthentication(token.getValue());
@@ -45,12 +52,21 @@ public class YhlTokenStore implements TokenStore {
 
     @Override
     public void storeAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
+        String refreshToken = null;
+        if (token.getRefreshToken() != null) {
+            refreshToken = token.getRefreshToken().getValue();
+        }
+        if (readAccessToken(token.getValue())!=null) {
+            removeAccessToken(token);
+        }
+
 
     }
 
     @Override
     public OAuth2AccessToken readAccessToken(String tokenValue) {
-        return null;
+        //我自我实现的反回的是IdSstring
+        return accessTokenDao.findById(tokenValue);
     }
 
     @Override
@@ -82,10 +98,21 @@ public class YhlTokenStore implements TokenStore {
     public void removeAccessTokenUsingRefreshToken(OAuth2RefreshToken refreshToken) {
 
     }
-
+    /**
+     * 检索根据提供的身份验证密钥存储的访问令牌
+     * */
     @Override
     public OAuth2AccessToken getAccessToken(OAuth2Authentication authentication) {
-        return null;
+        AccessToken accessToken =null;
+        // 提取关键提取key
+        String key = authenticationKeyGenerator.extractKey(authentication);
+
+
+        accessToken = accessTokenDao.findById(key);
+        if (accessToken != null) {
+            storeAccessToken(accessToken, authentication);
+         }
+        return accessToken;
     }
 
     @Override
