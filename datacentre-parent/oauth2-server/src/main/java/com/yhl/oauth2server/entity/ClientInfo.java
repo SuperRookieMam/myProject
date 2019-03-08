@@ -70,6 +70,8 @@ public class ClientInfo extends BaseEntity<String> implements ClientDetails {
     @Column(name = "organization_id")
     private String organizationId;
 
+
+
     @Override
     public String getClientId() {
         return clientId;

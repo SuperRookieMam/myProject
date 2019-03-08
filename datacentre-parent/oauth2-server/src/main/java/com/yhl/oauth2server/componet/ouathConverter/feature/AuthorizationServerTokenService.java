@@ -49,8 +49,9 @@ public class AuthorizationServerTokenService  implements AuthorizationServerToke
 
     @Transactional
     public OAuth2AccessToken createAccessToken(OAuth2Authentication authentication) throws AuthenticationException {
-
+        // 查询对应的ACCesstoken
         OAuth2AccessToken existingAccessToken = tokenStore.getAccessToken(authentication);
+
         OAuth2RefreshToken refreshToken = null;
         if (existingAccessToken != null) {
             if (existingAccessToken.isExpired()) {

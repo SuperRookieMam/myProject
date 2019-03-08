@@ -30,6 +30,19 @@ public class AccessToken extends BaseEntity<String>  implements OAuth2AccessToke
      @JoinColumn(name = "client_info")
      private ClientInfo clientInfo;
 
+     @Column(name = "access_token")
+     private  String accessToken;
+
+     private Set<String> scopes;
+
+     private  String tokenType = TOKEN_TYPE;
+
+     // token有效时间
+     @Column(name = "access_token_validity_seconds")
+     private Long validitySeconds;
+
+     @Column(name = "refresh_token_validity_seconds")
+     private Long refreshTokenTime;
      /**
       * 附加信息
       * 令牌序列化器使用additionalInformation映射导出OAuth扩展使用的任何字段。
@@ -45,7 +58,7 @@ public class AccessToken extends BaseEntity<String>  implements OAuth2AccessToke
 
      @Override
      public Set<String> getScope() {
-          return null;
+          return scopes;
      }
 
      @Override
@@ -55,22 +68,22 @@ public class AccessToken extends BaseEntity<String>  implements OAuth2AccessToke
 
      @Override
      public String getTokenType() {
-          return TOKEN_TYPE;
+          return tokenType;
      }
 
      @Override
      public boolean isExpired() {
-          return false;
+          return refreshTokenTime+validitySeconds < System.currentTimeMillis();
      }
 
      @Override
      public Date getExpiration() {
-          return null;
+          return new Date(refreshTokenTime+validitySeconds);
      }
 
      @Override
      public int getExpiresIn() {
-          return 0;
+          return (int)(validitySeconds/1000);
      }
 
      @Override

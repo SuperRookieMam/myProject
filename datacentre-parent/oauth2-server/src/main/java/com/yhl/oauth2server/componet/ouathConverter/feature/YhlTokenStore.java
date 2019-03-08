@@ -1,11 +1,13 @@
 package com.yhl.oauth2server.componet.ouathConverter.feature;
 
+import com.yhl.base.component.dto.ResultDto;
+import com.yhl.baseorm.component.constant.WhereCondition;
 import com.yhl.oauth2server.dao.AccessTokenDao;
 import com.yhl.oauth2server.entity.AccessToken;
+import com.yhl.oauth2server.entity.UserInfo;
 import com.yhl.oauth2server.service.ClientInfoService;
 import com.yhl.oauth2server.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.support.SqlLobValue;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -15,8 +17,8 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.sql.Types;
 import java.util.Collection;
+import java.util.List;
 
 /***
  * token 的创建、持久化、获取
@@ -29,6 +31,7 @@ public class YhlTokenStore implements TokenStore {
     private ClientInfoService clientInfoService;
     @Autowired
     private AccessTokenDao accessTokenDao;
+    private  String token = "accessToken";
     //使用默认的MD5解密
     private AuthenticationKeyGenerator authenticationKeyGenerator = new DefaultAuthenticationKeyGenerator();
 
@@ -40,13 +43,11 @@ public class YhlTokenStore implements TokenStore {
     @Override
     public OAuth2Authentication readAuthentication(String token) {
         OAuth2Authentication oAuth2Authentication =null;
-        AccessToken accessToken = accessTokenDao.findById(token);
-        if (ObjectUtils.isEmpty(accessToken)){
-            return oAuth2Authentication;
+        ResultDto resultDto = userInfoService.findById(token);
+        UserInfo userInfo =(UserInfo)resultDto.getData();
+        if (!ObjectUtils.isEmpty(userInfo)){
+            oAuth2Authentication =new OAuth2Authentication(null,userInfo);
         }
-
-
-
         return oAuth2Authentication;
     }
 
@@ -56,11 +57,11 @@ public class YhlTokenStore implements TokenStore {
         if (token.getRefreshToken() != null) {
             refreshToken = token.getRefreshToken().getValue();
         }
+
         if (readAccessToken(token.getValue())!=null) {
             removeAccessToken(token);
         }
-
-
+        accessTokenDao.insertByEntity(token);
     }
 
     @Override
@@ -71,7 +72,8 @@ public class YhlTokenStore implements TokenStore {
 
     @Override
     public void removeAccessToken(OAuth2AccessToken token) {
-
+        WhereCondition whereCondition =new WhereCondition();
+        accessTokenDao.delete((AccessToken) token);
     }
 
     @Override
@@ -103,14 +105,26 @@ public class YhlTokenStore implements TokenStore {
      * */
     @Override
     public OAuth2AccessToken getAccessToken(OAuth2Authentication authentication) {
-        AccessToken accessToken =null;
-        // 提取关键提取key
+
+        // 提取关键提取key{client_id:xxxxx,username:xxxx,scope:[]} 的加密字符串
         String key = authenticationKeyGenerator.extractKey(authentication);
 
+        authentication.getOAuth2Request();
 
-        accessToken = accessTokenDao.findById(key);
-        if (accessToken != null) {
-            storeAccessToken(accessToken, authentication);
+
+        AccessToken accessToken =null;
+
+        WhereCondition whereCondition =new WhereCondition();
+        whereCondition.and().addEq(token,key);
+        List<AccessToken> list = accessTokenDao.findByParams(whereCondition);
+        accessToken =list.isEmpty()?null:list.get(0);
+        //
+        String key1 = authenticationKeyGenerator.extractKey(readAuthentication(accessToken.getValue()));
+
+        //两个key不杨的时候
+        if (accessToken != null &&!key.equals(key1)) {
+             removeAccessToken(accessToken);
+             storeAccessToken(accessToken, authentication);
          }
         return accessToken;
     }
