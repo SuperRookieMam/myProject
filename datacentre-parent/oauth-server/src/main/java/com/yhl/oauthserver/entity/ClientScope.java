@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "client_scope")
 @Data
-public class ClientScope extends BaseEntity<String> implements Serializable {
+public class ClientScope extends BaseEntity<String> {
 
     @Column(name = "client_id", nullable = false, length = 50)
     private String clientId;

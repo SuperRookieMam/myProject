@@ -1,6 +1,5 @@
 server:
-  port: 8091
-
+  port: 8880
 spring:
   datasource:
    type: com.alibaba.druid.pool.DruidDataSource
@@ -8,4 +7,3 @@ spring:
    url: jdbc:mysql://127.0.0.1:3306/zgsc?useUnicode=true&characterEncoding=UTF-8&connectTimeout=60000&socketTimeout=60000&autoReconnect=true&autoReconnectForPools=true&failOverReadOnly=false&useSSL=false
    username: root
    password: 123456
-# 详情地址  https://blog.csdn.net/z57354658/article/details/82108263

@@ -1,6 +1,9 @@
 package com.yhl.oauth2server.componet.ouathConverter.feature;
 
+import com.sun.tools.javac.parser.Tokens;
+import jdk.nashorn.internal.parser.Token;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -21,7 +24,6 @@ import java.util.UUID;
 /**
  * 自定义对token的处理
  * */
-@Component
 public class AuthorizationServerTokenService  implements AuthorizationServerTokenServices, ResourceServerTokenServices,
         ConsumerTokenServices, InitializingBean {
 
@@ -39,7 +41,7 @@ public class AuthorizationServerTokenService  implements AuthorizationServerToke
 
     private TokenEnhancer accessTokenEnhancer;
 
-    private AuthenticationManagerConverter authenticationManager;
+    private AuthenticationManager authenticationManager;
     /**
      * Initialize these token services. If no random generator is set, one will be created.
      */
@@ -47,14 +49,14 @@ public class AuthorizationServerTokenService  implements AuthorizationServerToke
         Assert.notNull(tokenStore, "tokenStore must be set");
     }
 
-    @Transactional
+    @Transactional(value = "transactionManagerPrimary",rollbackFor = Exception.class)
     public OAuth2AccessToken createAccessToken(OAuth2Authentication authentication) throws AuthenticationException {
         // 查询对应的ACCesstoken
         OAuth2AccessToken existingAccessToken = tokenStore.getAccessToken(authentication);
-
         OAuth2RefreshToken refreshToken = null;
         if (existingAccessToken != null) {
-            if (existingAccessToken.isExpired()) {
+            //确保每次登录都刷新token,屏蔽掉过期蔡刷新
+            if (/*existingAccessToken.isExpired()*/true) {
                 if (existingAccessToken.getRefreshToken() != null) {
                     refreshToken = existingAccessToken.getRefreshToken();
                     // The token store could remove the refresh token when the
@@ -98,7 +100,7 @@ public class AuthorizationServerTokenService  implements AuthorizationServerToke
 
     }
 
-    @Transactional(noRollbackFor={InvalidTokenException.class, InvalidGrantException.class})
+    @Transactional(value = "transactionManagerPrimary" ,noRollbackFor={InvalidTokenException.class, InvalidGrantException.class})
     public OAuth2AccessToken refreshAccessToken(String refreshTokenValue, TokenRequest tokenRequest)
             throws AuthenticationException {
 
@@ -112,8 +114,10 @@ public class AuthorizationServerTokenService  implements AuthorizationServerToke
         }
 
         OAuth2Authentication authentication = tokenStore.readAuthenticationForRefreshToken(refreshToken);
+        // 验证如验证
         if (this.authenticationManager != null && !authentication.isClientOnly()) {
-            // The client has already been authenticated, but the user authentication might be old now, so give it a
+            // The client has already been authenticated,
+            // but the user authentication might be old now, so give it a
             // chance to re-authenticate.
             Authentication user = new PreAuthenticatedAuthenticationToken(authentication.getUserAuthentication(), "", authentication.getAuthorities());
             user = authenticationManager.authenticate(user);
@@ -150,17 +154,13 @@ public class AuthorizationServerTokenService  implements AuthorizationServerToke
         return accessToken;
     }
 
+
     public OAuth2AccessToken getAccessToken(OAuth2Authentication authentication) {
         return tokenStore.getAccessToken(authentication);
     }
 
     /**
      * Create a refreshed authentication.
-     *
-     * @param authentication The authentication.
-     * @param request The scope for the refreshed token.
-     * @return The refreshed authentication.
-     * @throws InvalidScopeException If the scope requested is invalid or wider than the original scope.
      */
     private OAuth2Authentication createRefreshedAuthentication(OAuth2Authentication authentication, TokenRequest request) {
         OAuth2Authentication narrowed = authentication;
@@ -272,7 +272,6 @@ public class AuthorizationServerTokenService  implements AuthorizationServerToke
 
     /**
      * The access token validity period in seconds
-     *
      * @param clientAuth the current authorization request
      * @return the access token validity period in seconds
      */
@@ -321,79 +320,40 @@ public class AuthorizationServerTokenService  implements AuthorizationServerToke
 
     /**
      * An access token enhancer that will be applied to a new token before it is saved in the token store.
-     *
-     * @param accessTokenEnhancer the access token enhancer to set
      */
     public void setTokenEnhancer(TokenEnhancer accessTokenEnhancer) {
         this.accessTokenEnhancer = accessTokenEnhancer;
     }
 
-    /**
-     * The validity (in seconds) of the refresh token. If less than or equal to zero then the tokens will be
-     * non-expiring.
-     *
-     * @param refreshTokenValiditySeconds The validity (in seconds) of the refresh token.
-     */
+
     public void setRefreshTokenValiditySeconds(int refreshTokenValiditySeconds) {
         this.refreshTokenValiditySeconds = refreshTokenValiditySeconds;
     }
 
-    /**
-     * The default validity (in seconds) of the access token. Zero or negative for non-expiring tokens. If a client
-     * details service is set the validity period will be read from he client, defaulting to this value if not defined
-     * by the client.
-     *
-     * @param accessTokenValiditySeconds The validity (in seconds) of the access token.
-     */
     public void setAccessTokenValiditySeconds(int accessTokenValiditySeconds) {
         this.accessTokenValiditySeconds = accessTokenValiditySeconds;
     }
-
-    /**
-     * Whether to support the refresh token.
-     *
-     * @param supportRefreshToken Whether to support the refresh token.
-     */
     public void setSupportRefreshToken(boolean supportRefreshToken) {
         this.supportRefreshToken = supportRefreshToken;
     }
 
     /**
      * Whether to reuse refresh tokens (until expired).
-     *
-     * @param reuseRefreshToken Whether to reuse refresh tokens (until expired).
      */
     public void setReuseRefreshToken(boolean reuseRefreshToken) {
         this.reuseRefreshToken = reuseRefreshToken;
     }
 
-    /**
-     * The persistence strategy for token storage.
-     *
-     * @param tokenStore the store for access and refresh tokens.
-     */
     public void setTokenStore(TokenStore tokenStore) {
         this.tokenStore = tokenStore;
     }
-
-    /**
-     * An authentication manager that will be used (if provided) to check the user authentication when a token is
-     * refreshed.
-     *
-     * @param authenticationManager the authenticationManager to set
-     */
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = (AuthenticationManagerConverter)authenticationManager;
     }
-
-    /**
-     * The client details service to use for looking up clients (if necessary). Optional if the access token expiry is
-     * set globally via {@link #setAccessTokenValiditySeconds(int)}.
-     *
-     * @param clientDetailsService the client details service
-     */
     public void setClientDetailsService(ClientDetailsService clientDetailsService) {
         this.clientDetailsService = clientDetailsService;
     }
-
+    public AuthenticationManager getAuthenticationManager(){
+        return  this.authenticationManager;
+    }
 }

@@ -1,6 +1,5 @@
 package com.yhl.oauth2server.componet.ouathConverter.feature;
 
-import com.yhl.oauth2server.service.ClientInfoService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,6 +8,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.resource.OAuth2AccessDeniedException;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
@@ -18,13 +18,13 @@ import org.springframework.util.Assert;
 import java.util.Collection;
 import java.util.Set;
 
-@Getter
+
 @Setter
 public class AuthenticationManagerConverter implements AuthenticationManager {
 
-    private ResourceServerTokenServicesConverter tokenServices;
+    private ResourceServerTokenServices tokenServices;
 
-    private ClientInfoService clientInfoService;
+    private ClientDetailsService clientInfoService;
 
     private String resourceId;
 

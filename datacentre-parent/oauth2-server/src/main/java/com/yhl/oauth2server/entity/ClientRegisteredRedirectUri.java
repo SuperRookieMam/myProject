@@ -1,10 +1,18 @@
 package com.yhl.oauth2server.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
+import com.yhl.base.baseEntity.BaseEntity;
+import lombok.Getter;
+import lombok.Setter;
 
-@Table(name = "client_registered_redirect_uri")
-public class ClientRegisteredRedirectUri {
+import javax.persistence.*;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "client_registered_redirect_uri",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"client_id","redirect_uri"})},
+        indexes = {@Index(columnList = "client_id")})
+public class ClientRegisteredRedirectUri extends BaseEntity<String> {
 
     @Column(name = "client_id", nullable = false, length = 50)
     private String clientId;

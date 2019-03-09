@@ -48,6 +48,7 @@
         <spring-boot-start-web.version>1.5.15.RELEASE</spring-boot-start-web.version>
         <spring-data-jpa.version>1.5.15.RELEASE</spring-data-jpa.version>
         <log4j.version>2.11.1</log4j.version>
+        <security.version>2.1.1.RELEASE</security.version>
         <yhl-componet.version>1.0-SNAPSHOT</yhl-componet.version>
     </properties>
     <dependencies>
@@ -72,7 +73,17 @@
                 <artifactId>yhl-security-common</artifactId>
                 <version>${yhl-componet.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${security.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security.oauth.boot</groupId>
+                <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+                <version>${security.version}</version>
+                <optional>true</optional>
+            </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
@@ -111,7 +122,15 @@
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${springboot.mybatis.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security.oauth.boot</groupId>
+                <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+                <optional>true</optional>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>

@@ -1,4 +1,4 @@
-package com.yhl.oauth2server.entity;
+package com.yhl.oauthserver.entity;
 
 /**
  * 该表用于在客户端系统中存储从服务端获取的token数据, 在spring-oauth-server项目中未使用到.

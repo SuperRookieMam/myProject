@@ -1,18 +1,18 @@
 package com.yhl.oauth2server.entity;
 
 import com.yhl.base.baseEntity.BaseEntity;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
+import javax.persistence.*;
 
-
+@Getter
+@Setter
 @Entity
-@Table(name = "authorized_grant_type")
-@Data
-public class AuthorizedGrantType extends BaseEntity<String> implements Serializable {
+@Table(name = "authorized_grant_type",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"client_id","grant_type"})},
+        indexes = {@Index(columnList = "client_id")})
+public class AuthorizedGrantType extends BaseEntity<String> {
 
     private static final long serialVersionUID = 4388749422719856987L;
     @Column(name = "client_id", nullable = false, length = 50)

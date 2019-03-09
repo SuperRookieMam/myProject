@@ -12,6 +12,7 @@ import java.util.*;
 
 @Getter
 @Setter
+@Entity
 @Table(name = "oauth_client_details",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"client_id"})},
         indexes = {@Index(columnList = "client_id")})
@@ -23,7 +24,7 @@ public class OAuthClientDetails extends BaseEntity<String> implements ClientDeta
      *  对于不同的grant_type,该字段都是必须的.
      *  在实际应用中的另一个名称叫appKey,与client_id是同一个概念.
      * */
-    @Column(name = "client_id", nullable = false, length = 50)
+    @Column(name = "client_id")
     private String clientId;
 
     /**
@@ -58,7 +59,7 @@ public class OAuthClientDetails extends BaseEntity<String> implements ClientDeta
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "scope")
     @CollectionTable(name = "client_scope", joinColumns = {
-            @JoinColumn(name = "client_id")
+            @JoinColumn(name = "client_id",referencedColumnName = "client_id")
     })
     private Set<String> scopes = Collections.emptySet();
     /**
@@ -72,7 +73,7 @@ public class OAuthClientDetails extends BaseEntity<String> implements ClientDeta
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "grant_type")
     @CollectionTable(name = "authorized_grant_type", joinColumns = {
-            @JoinColumn(name = "client_id")
+            @JoinColumn(name = "client_id",referencedColumnName = "client_id")
     })
     private Set<String> authorizedGrantTypes = Collections.emptySet();
 
@@ -95,7 +96,7 @@ public class OAuthClientDetails extends BaseEntity<String> implements ClientDeta
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "redirect_uri")
     @CollectionTable(name = "client_registered_redirect_uri", joinColumns = {
-            @JoinColumn(name = "client_id")
+            @JoinColumn(name = "client_id",referencedColumnName = "client_id")
     })
     private Set<String> registeredRedirectUri;
     /**
@@ -107,14 +108,17 @@ public class OAuthClientDetails extends BaseEntity<String> implements ClientDeta
      *     则该字段必须要设置对应的权限值, 因为服务端将根据该字段值的权限来判断是否有权限访问对应的API. 
      *     (请在spring-oauth-client项目中来测试不同grant_type时authorities的变化)
      * */
+    @Transient
     private List<GrantedAuthority> authorities = Collections.emptyList();
     /**
      * 设定客户端的access_token的有效时间值(单位:秒),可选, 若不设定值则使用默认的有效时间值(60 * 60 * 12, 12小时).
      * */
+    @Column(name = "access_token_validity_seconds")
     private Integer accessTokenValiditySeconds = 60 * 60 * 12;
     /**
      * 设定客户端的refresh_token的有效时间值(单位:秒),可选, 若不设定值则使用默认的有效时间值(60 * 60 * 24 * 30, 30天).
      * */
+    @Column(name = "refresh_token_validity_seconds")
     private Integer refreshTokenValiditySeconds =60 * 60 * 24 * 30;
 
     /**
@@ -126,6 +130,8 @@ public class OAuthClientDetails extends BaseEntity<String> implements ClientDeta
      * (详见ClientDetails.java的getAdditionalInformation()方法的注释)在实际应用中,
      * 可以用该字段来存储关于客户端的一些其他信息,如客户端的国家,地区,注册时的IP地址等等.
      * */
+   // @Column(name = "additional_information")
+    @Transient
     private Map<String,Object> additionalInformation  = new LinkedHashMap<String, Object>();
 
     /**
@@ -134,6 +140,7 @@ public class OAuthClientDetails extends BaseEntity<String> implements ClientDeta
      * 若该值为'true'或支持的scope值,则会跳过用户Approve的页面, 直接授权.
      * 该字段与 trusted 有类似的功能, 是 spring-security-oauth2 的 2.0 版本后添加的新属性.
      * */
+    @Column(name = "auto_approve")
     private boolean autoApprove = false;
 
     /**
@@ -141,6 +148,7 @@ public class OAuthClientDetails extends BaseEntity<String> implements ClientDeta
      * 对该字段的具体使用请参考CustomJdbcClientDetailsService.java,在该类中,
      * 扩展了在查询client_details的SQL加上archived = 0条件 (扩展字段)
      * */
+    @Column(name = "archived")
     private  Integer archived;
     /**
      * 设置客户端是否为受信任的,默认为'0'(即不受信任的,1为受信任的). 
@@ -149,6 +157,7 @@ public class OAuthClientDetails extends BaseEntity<String> implements ClientDeta
      * 若该字段为1,则在登录后不需要再让用户Approve同意授权(因为是受信任的). 
      * 对该字段的具体使用请参考OauthUserApprovalHandler.java. (扩展字段)
      * */
+    @Column(name = "trusted")
     private  Integer trusted;
 
 

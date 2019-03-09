@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "clinet_resource")
 @Data
-public class ClinentResource extends BaseEntity<String> implements Serializable{
+public class ClinentResource extends BaseEntity<String>{
     private static final long serialVersionUID = -6444299595553304443L;
 
     @Column(name = "client_id", nullable = false, length = 50)
