@@ -14,8 +14,8 @@
     <artifactId>datacentre-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>oauth-server</module>
         <module>oauth2-server</module>
+        <module>resource-zuul-server</module>
     </modules>
     <packaging>pom</packaging>
     <dependencyManagement>
