@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.Principal
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerTokenServicesConfiguration;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoRestTemplateFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -32,7 +31,6 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.Field;
 import java.security.Principal;
 
 /**
@@ -123,7 +121,7 @@ public class SsoConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 
-	private final ApplicationContext getApplicationContext() {
+/*	private final ApplicationContext getApplicationContext() {
 		ApplicationContext context =null;
 		try {
 			Class clazz =this.getClass().getSuperclass().getSuperclass();
@@ -135,7 +133,7 @@ public class SsoConfiguration extends WebSecurityConfigurerAdapter {
 			e.printStackTrace();
 		}
 		return context;
-	}
+	}*/
 	/**
 	 * 指定解码Token信息的解码器
 	 */

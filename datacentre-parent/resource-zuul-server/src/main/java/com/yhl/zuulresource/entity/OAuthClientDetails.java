@@ -12,10 +12,10 @@ import java.util.*;
 
 @Getter
 @Setter
-/*@Entity
+@Entity
 @Table(name = "oauth_client_details",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"client_id"})},
-        indexes = {@Index(columnList = "client_id")})*/
+        indexes = {@Index(columnList = "client_id")})
 public class OAuthClientDetails extends BaseEntity<String> implements ClientDetails {
 
     /**

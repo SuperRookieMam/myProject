@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableZuulProxy
-@ComponentScan
+@ComponentScan(basePackages = {"com.yhl.**"})
 public class ZuulResourceApplication {
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(ZuulResourceApplication.class, args);

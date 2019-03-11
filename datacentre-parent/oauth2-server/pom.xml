@@ -16,7 +16,6 @@
         <dependency>
             <groupId>com.yhl</groupId>
             <artifactId>yhl-base</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
         <!--swagger 加密码-->
         <dependency>
