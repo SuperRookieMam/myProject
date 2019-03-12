@@ -63,9 +63,13 @@ public class SsoConfiguration extends WebSecurityConfigurerAdapter {
 		http.antMatcher("/**").authorizeRequests().anyRequest().authenticated();
 		// 指定相关资源的权限校验过滤器
 		http.addFilterBefore(filterSecurityInterceptor, FilterSecurityInterceptor.class);
-		http.csrf().disable();
-		http.exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
-		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+		http.csrf()
+			.disable();
+		http.exceptionHandling()
+			.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+		http.logout()
+			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+		//此security使用在outheclient 的配置上
 		http.apply(new OAuth2ClientAuthenticationConfigurer(oauth2SsoFilter()));
 	}
 
@@ -108,32 +112,24 @@ public class SsoConfiguration extends WebSecurityConfigurerAdapter {
 	 * 来处理自己需要的逻辑
 	 * */
 	private OAuth2ClientAuthenticationProcessingFilter oauth2SsoFilter() {
-		OAuth2ClientAuthenticationProcessingFilter filter = new OAuth2ClientAuthenticationProcessingFilter(
-				ssoProperties.getLoginPath());
+		//拦截/login
+		OAuth2ClientAuthenticationProcessingFilter filter =
+				new OAuth2ClientAuthenticationProcessingFilter(ssoProperties.getLoginPath());
+		//这里配置配置的远程获取user信息的，如果要自定义也可以
 		filter.setRestTemplate(restTemplateFactory.getUserInfoRestTemplate());
+		//这里配置远程定获取token的servicve
 		filter.setTokenServices(remoteTokenServices);
 		filter.setApplicationEventPublisher(getApplicationContext());
+		//这里配置登录成功后的控制器
 		filter.setAuthenticationSuccessHandler(loginSuccessHandler());
+
 		return filter;
 	}
+
 	private AuthenticationSuccessHandler loginSuccessHandler(){
 		return new LoginSuccessHandler();
 	}
 
-
-/*	private final ApplicationContext getApplicationContext() {
-		ApplicationContext context =null;
-		try {
-			Class clazz =this.getClass().getSuperclass().getSuperclass();
-			Field field = clazz.getDeclaredField("context");
-			field.setAccessible(true);
-			context = (ApplicationContext)field.get(this);
-			field.setAccessible(false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return context;
-	}*/
 	/**
 	 * 指定解码Token信息的解码器
 	 */

@@ -25,7 +25,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
-
+/*资源服务器*/
 @EnableResourceServer
 @EnableWebSecurity
 public class ResourceConfigure extends ResourceServerConfigurerAdapter {
@@ -35,6 +35,8 @@ public class ResourceConfigure extends ResourceServerConfigurerAdapter {
 
     @Autowired
     RequestAuthoritiesService requestAuthoritiesService;
+
+
     /**
      * 配置对资源的保护模式
      */
@@ -44,7 +46,7 @@ public class ResourceConfigure extends ResourceServerConfigurerAdapter {
         super.configure(http);
         // 增加自定义的资源授权过滤器
         http.addFilterBefore(interceptor(), FilterSecurityInterceptor.class);
-        //自定义的请求规则
+        // 请求比较器,
         http.requestMatcher(new BearerTokenRequestMatcher());
     }
 
@@ -56,14 +58,15 @@ public class ResourceConfigure extends ResourceServerConfigurerAdapter {
         AccessDecisionManager accessDecisionManager = new AffirmativeBased(voters);
         //权限管理
         interceptor.setAccessDecisionManager(accessDecisionManager);
-        //筛选 请求 权限 元素
+        //返回给客户的东西
         interceptor.setSecurityMetadataSource(securityMetadataSource());
         return interceptor;
     }
 
-    @Bean
+    @Bean  //封装你想要的东西，比如说树形菜单啊什么的
     public FilterInvocationSecurityMetadataSource securityMetadataSource() {
-        RequestAuthoritiesFilterInvocationSecurityMetadataSource MetadataSource  = new RequestAuthoritiesFilterInvocationSecurityMetadataSource();
+        RequestAuthoritiesFilterInvocationSecurityMetadataSource MetadataSource
+                = new RequestAuthoritiesFilterInvocationSecurityMetadataSource();
         MetadataSource.setRequestAuthoritiesService(requestAuthoritiesService);
         return MetadataSource;
     }
@@ -78,7 +81,7 @@ public class ResourceConfigure extends ResourceServerConfigurerAdapter {
         // 这里指定通过token store来校验token
         // 当第三方服务通过access_token来访问服务时，
         // 直接从token_store中获取相关信息，而不用再发起远程调用请求
-//        为了节省时间我是直接从服务那边拷贝过来的
+        //        为了节省时间我是直接从服务那边拷贝过来的
         resources.tokenServices(ResourceServerTokenService());
     }
 
@@ -91,19 +94,20 @@ public class ResourceConfigure extends ResourceServerConfigurerAdapter {
     }
 
 
-    //判断是不是来自资源服务器的请求,因为资源服务器可能会增加某个属性
+    //无状态请求比较
     static class BearerTokenRequestMatcher implements RequestMatcher {
         //请求里面的header里面要有这个属性
         private boolean matchHeader(HttpServletRequest request) {
             String authHeader = request.getHeader("Authorization");
+            //获得请求类型，匹配的是什么 "scope";"Bearer";"OAuth2";"access_token";"token_type";"expires_in";
             return StringUtils.startsWithIgnoreCase(authHeader, OAuth2AccessToken.BEARER_TYPE);
         }
 
-        @Override
+        @Override//判断是参数请求还是头部请求，还是非法请求
         public boolean matches(HttpServletRequest request) {
             return matchHeader(request) || matchParameter(request);
         }
-
+        //判断是不是头部请求
         private boolean matchParameter(HttpServletRequest request) {
             return !StringUtils.isEmpty(request.getParameter(OAuth2AccessToken.ACCESS_TOKEN));
         }

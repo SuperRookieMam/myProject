@@ -42,8 +42,7 @@ public class AuthenticationManagerConverter implements AuthenticationManager {
      * 从{@link ResourceServerTokenServices}加载身份验证，
      * 并检查 资源id包含在{link AuthorizationRequest}中(如果指定了一个)。
      * 也认证副本 从输入到输出的详细信息(例如，通常使访问令牌值和请求详细信息可以)稍后报告)。
-     *
-     * @param authentication an authentication request containing an access token value as the principal
+     *  @param authentication an authentication request containing an access token value as the principal
      */
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
