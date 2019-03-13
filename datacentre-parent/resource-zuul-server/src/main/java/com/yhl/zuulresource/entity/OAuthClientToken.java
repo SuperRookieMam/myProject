@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "oauth_client_token")
-public class OAuthClientToken extends BaseEntity<String> {
+public class OAuthClientToken extends BaseEntity<String> implements com.yhl.authoritycommom.entity.OAuthClientToken {
 
     /**
      * 从服务器端获取到的access_token的值.

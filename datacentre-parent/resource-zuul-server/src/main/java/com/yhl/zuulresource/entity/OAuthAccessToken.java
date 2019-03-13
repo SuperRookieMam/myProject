@@ -3,7 +3,6 @@ package com.yhl.zuulresource.entity;
 import com.yhl.base.baseEntity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 
 import javax.persistence.*;
@@ -21,7 +20,7 @@ import java.util.Set;
 @Table(name = "oauth_access_token",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"authentication_id"})},
         indexes = {@Index(columnList = "authentication_id")})
-public class OAuthAccessToken extends BaseEntity<String> implements OAuth2AccessToken {
+public class OAuthAccessToken extends BaseEntity<String> implements com.yhl.authoritycommom.entity.OAuthAccessToken {
 
     /**
      * 该字段的值是将access_token的值通过MD5加密后存储的.

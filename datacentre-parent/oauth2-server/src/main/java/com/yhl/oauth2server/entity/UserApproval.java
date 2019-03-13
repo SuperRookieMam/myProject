@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.oauth2.provider.approval.Approval;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -17,8 +16,9 @@ import java.util.*;
 @Table(name = "user_aproval",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id","client_id","scope"})},
         indexes = {@Index(columnList = "user_id")})
-public class UserApproval  extends BaseEntity<String> implements Serializable{
+public class UserApproval  extends BaseEntity<String> implements com.yhl.authoritycommom.entity.UserApproval {
 
+    private static final long serialVersionUID = 5194945293219450500L;
     @Column(name = "user_id", length = 50)
     private String userId;
 
@@ -41,12 +41,12 @@ public class UserApproval  extends BaseEntity<String> implements Serializable{
     private Date lastUpdatedAt =new Date();
 
 
-    public  static List<UserApproval> approvalToUserApproval(Collection<Approval> approvals){
-        List<UserApproval> list=new ArrayList<>();
+    public  static List<com.yhl.authoritycommom.entity.UserApproval> approvalToUserApproval(Collection<Approval> approvals){
+        List<com.yhl.authoritycommom.entity.UserApproval> list=new ArrayList<>();
         Iterator<Approval> iterator = approvals.iterator();
         while (iterator.hasNext()){
             Approval approval =iterator.next();
-            UserApproval userApproval =new UserApproval();
+            com.yhl.authoritycommom.entity.UserApproval userApproval =new UserApproval();
             userApproval.setClientId(approval.getClientId());
             userApproval.setExpiresAt(approval.getExpiresAt());
             userApproval.setLastUpdatedAt(approval.getLastUpdatedAt());
@@ -57,11 +57,11 @@ public class UserApproval  extends BaseEntity<String> implements Serializable{
         return list;
     }
 
-    public  static List<Approval> userApprovalToApproval(Collection<UserApproval> userApprovals){
+    public  static List<Approval> userApprovalToApproval(Collection<com.yhl.authoritycommom.entity.UserApproval> userApprovals){
         List<Approval> list=new ArrayList<>();
-        Iterator<UserApproval> iterator = userApprovals.iterator();
+        Iterator<com.yhl.authoritycommom.entity.UserApproval> iterator = userApprovals.iterator();
         while (iterator.hasNext()){
-            UserApproval userApproval =iterator.next();
+            com.yhl.authoritycommom.entity.UserApproval userApproval =iterator.next();
             Approval approval =new Approval(
                     userApproval.getUserId(),
                     userApproval.getClientId(),

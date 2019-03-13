@@ -1,5 +1,6 @@
 package com.yhl.oauth2server.componet.config;
 
+
 import com.yhl.oauth2server.componet.ouathConverter.feature.AuthenticationManagerConverter;
 import com.yhl.oauth2server.componet.ouathConverter.feature.AuthorizationServerTokenService;
 import com.yhl.oauth2server.componet.ouathConverter.feature.TokenStoreConverter;

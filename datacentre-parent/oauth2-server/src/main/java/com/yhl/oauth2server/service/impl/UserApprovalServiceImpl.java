@@ -23,7 +23,7 @@ public class UserApprovalServiceImpl extends BaseServiceImpl<UserApproval,String
     @Override
     @Transactional(value = "transactionManagerPrimary",rollbackFor = Exception.class)
     public boolean addApprovals(Collection<Approval> approvals) {
-       List<UserApproval> userApprovals = UserApproval.approvalToUserApproval(approvals);
+       List<com.yhl.authoritycommom.entity.UserApproval> userApprovals = UserApproval.approvalToUserApproval(approvals);
          ResultDto resultDto =insertByList(userApprovals);
          boolean flage= ((int)resultDto.getData())== approvals.size();
         return flage;
@@ -51,7 +51,7 @@ public class UserApprovalServiceImpl extends BaseServiceImpl<UserApproval,String
         WhereCondition whereCondition =new WhereCondition();
         whereCondition.and().addEq(USERID,userId).addEq(CLIENTID,clientId);
         ResultDto resultDto = findByParams(whereCondition);
-        List<Approval> approvals =UserApproval.userApprovalToApproval((List<UserApproval>)resultDto.getData());
+        List<Approval> approvals = UserApproval.userApprovalToApproval((List<com.yhl.authoritycommom.entity.UserApproval>)resultDto.getData());
         return approvals;
     }
 }

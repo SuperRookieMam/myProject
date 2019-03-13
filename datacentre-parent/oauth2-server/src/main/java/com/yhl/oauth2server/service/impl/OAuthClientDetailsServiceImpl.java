@@ -21,7 +21,9 @@ public class OAuthClientDetailsServiceImpl extends BaseServiceImpl<OAuthClientDe
         if (clientDetails.isEmpty()){
             throw new ClientRegistrationException("客户端不存在");
         }
-        return clientDetails.get(0) ;
+        com.yhl.authoritycommom.entity.OAuthClientDetails oAuthClientDetails
+                =(com.yhl.authoritycommom.entity.OAuthClientDetails ) clientDetails.get(0);
+        return   oAuthClientDetails;
     }
 
 }

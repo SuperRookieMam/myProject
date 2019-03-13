@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name = "authorized_grant_type",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"client_id","grant_type"})},
         indexes = {@Index(columnList = "client_id")})
-public class AuthorizedGrantType extends BaseEntity<String> {
+public class AuthorizedGrantType extends BaseEntity<String> implements com.yhl.authoritycommom.entity.AuthorizedGrantType {
 
     private static final long serialVersionUID = 4388749422719856987L;
     @Column(name = "client_id", nullable = false, length = 50)

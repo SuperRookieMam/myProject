@@ -3,7 +3,6 @@ package com.yhl.oauth2server.entity;
 import com.yhl.base.baseEntity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 
 import javax.persistence.*;
 
@@ -18,7 +17,7 @@ import javax.persistence.*;
 @Table(name = "oauth_refresh_token",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"token_id"})},
         indexes = {@Index(columnList = "token_id")})
-public class OAuthRefreshToken  extends BaseEntity<String> implements OAuth2RefreshToken {
+public class OAuthRefreshToken  extends BaseEntity<String> implements com.yhl.authoritycommom.entity.OAuthRefreshToken {
 
     /**
      * 	该字段的值是将refresh_token的值通过MD5加密后存储的.

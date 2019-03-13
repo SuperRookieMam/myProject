@@ -1,6 +1,5 @@
 package com.yhl.oauth2server.componet.ouathConverter.feature;
 
-import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;

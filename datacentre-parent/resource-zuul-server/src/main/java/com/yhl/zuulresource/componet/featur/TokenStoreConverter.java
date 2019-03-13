@@ -1,11 +1,11 @@
-package com.yhl.oauth2server.componet.ouathConverter.feature;
+package com.yhl.zuulresource.componet.featur;
 
 import com.yhl.authoritycommom.componet.util.SerializationUtils;
 import com.yhl.authoritycommom.entity.OAuthAccessToken;
 import com.yhl.authoritycommom.entity.OAuthRefreshToken;
 import com.yhl.baseorm.component.constant.WhereCondition;
-import com.yhl.oauth2server.dao.OAuthAccessTokenDao;
-import com.yhl.oauth2server.dao.OAuthRefreshTokenDao;
+import com.yhl.zuulresource.dao.OAuthAccessTokenDao;
+import com.yhl.zuulresource.dao.OAuthRefreshTokenDao;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -74,7 +74,7 @@ public class TokenStoreConverter implements TokenStore {
         if (readAccessToken(token.getValue())!=null) {
             removeAccessToken(token.getValue());
         }
-        OAuthAccessToken oAuthAccessToken = new com.yhl.oauth2server.entity.OAuthAccessToken();
+        OAuthAccessToken oAuthAccessToken = new com.yhl.zuulresource.entity.OAuthAccessToken();
         oAuthAccessToken.setTokenId(extractTokenKey(token.getValue()));
         oAuthAccessToken.setToken(serializeAccessToken(token));
         oAuthAccessToken.setAuthenticationId(authenticationKeyGenerator.extractKey(authentication));
@@ -114,7 +114,7 @@ public class TokenStoreConverter implements TokenStore {
     @Override
     @Transactional(value = "transactionManagerPrimary",rollbackFor = Exception.class)
     public void storeRefreshToken(OAuth2RefreshToken refreshToken, OAuth2Authentication authentication) {
-        OAuthRefreshToken oAuthRefreshToken =new com.yhl.oauth2server.entity.OAuthRefreshToken();
+        OAuthRefreshToken oAuthRefreshToken =new com.yhl.zuulresource.entity.OAuthRefreshToken();
         oAuthRefreshToken.setTokenId(extractTokenKey(refreshToken.getValue()));
         oAuthRefreshToken.setToken(serializeRefreshToken(refreshToken));
         oAuthRefreshToken.setAuthentication(serializeAuthentication(authentication));

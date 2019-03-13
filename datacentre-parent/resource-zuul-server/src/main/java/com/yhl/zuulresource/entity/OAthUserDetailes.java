@@ -4,51 +4,81 @@ import com.yhl.base.baseEntity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Collection;
+import java.util.Collections;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "oath_user_detailes")
-public class OAthUserDetailes extends BaseEntity<String> implements UserDetails {
+public class OAthUserDetailes extends BaseEntity<String> implements com.yhl.authoritycommom.entity.OAthUserDetailes {
 
+    private static final long serialVersionUID = 9056596580975978130L;
+    @Column(name = "user_name")
+    private  String userName;
+
+    @Column(name = "pass_word")
+    private  String passWord;
+
+    @Column(name = "is_expired")
+    private boolean isExpired;
+
+    @Column(name = "is_lock")
+    private boolean isLock;
+
+    @Column(name = "credentials")
+    private String credentials;
+
+    @Column(name = "is_enabled")
+    private boolean isEnabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return passWord;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return userName;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return !isExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return !isLock;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return !StringUtils.isEmpty(credentials);
+    }
+
+    @Override
+    public String getUserName() {
+        return userName;
+    }
+
+    @Override
+    public String getPassWord() {
+        return passWord;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return isEnabled;
     }
 }

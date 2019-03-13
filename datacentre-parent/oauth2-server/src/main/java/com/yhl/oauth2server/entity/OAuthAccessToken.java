@@ -3,7 +3,6 @@ package com.yhl.oauth2server.entity;
 import com.yhl.base.baseEntity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 
 import javax.persistence.*;
@@ -21,7 +20,7 @@ import java.util.Set;
 @Table(name = "oauth_access_token",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"authentication_id"})},
         indexes = {@Index(columnList = "authentication_id")})
-public class OAuthAccessToken extends BaseEntity<String> implements OAuth2AccessToken {
+public class OAuthAccessToken extends BaseEntity<String> implements com.yhl.authoritycommom.entity.OAuthAccessToken {
 
     /**
      * 该字段的值是将access_token的值通过MD5加密后存储的.
@@ -32,6 +31,7 @@ public class OAuthAccessToken extends BaseEntity<String> implements OAuth2Access
     /**
      * 存储将OAuth2AccessToken.java对象序列化后的二进制数据, 是真实的AccessToken的数据值.
      * */
+    @Lob
     @Column(name = "token")
     private String token;
     /**
@@ -46,6 +46,7 @@ public class OAuthAccessToken extends BaseEntity<String> implements OAuth2Access
      *存储将OAuth2Authentication.java对象序列化后的二进制数据.
      * */
     @Column(name = "authentication")
+    @Lob
     private  String authentication;
     /**
      *
@@ -62,6 +63,7 @@ public class OAuthAccessToken extends BaseEntity<String> implements OAuth2Access
     /**
      *该字段的值是将refresh_token的值通过MD5加密后存储的.
      * */
+    @Lob
     @Column(name = "refresh_token")
     private  String  refreshToken;
 

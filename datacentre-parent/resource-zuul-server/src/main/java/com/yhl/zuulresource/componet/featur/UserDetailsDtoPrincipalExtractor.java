@@ -1,7 +1,7 @@
 package com.yhl.zuulresource.componet.featur;
 
 
-import com.yhl.zuulresource.entity.OAthGrantedAuthority;
+import com.yhl.authoritycommom.entity.OAthGrantedAuthority;
 import com.yhl.zuulresource.entity.OAthUserDetailes;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.security.core.userdetails.UserDetails;

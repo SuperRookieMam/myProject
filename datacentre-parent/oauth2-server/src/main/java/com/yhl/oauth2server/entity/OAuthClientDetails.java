@@ -5,7 +5,6 @@ import com.yhl.base.baseEntity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.provider.ClientDetails;
 
 import javax.persistence.*;
 import java.util.*;
@@ -16,7 +15,7 @@ import java.util.*;
 @Table(name = "oauth_client_details",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"client_id"})},
         indexes = {@Index(columnList = "client_id")})
-public class OAuthClientDetails extends BaseEntity<String> implements ClientDetails {
+public class OAuthClientDetails extends BaseEntity<String> implements com.yhl.authoritycommom.entity.OAuthClientDetails {
 
     /**
      *必须唯一,不能为空. 用于唯一标识每一个客户端(client);

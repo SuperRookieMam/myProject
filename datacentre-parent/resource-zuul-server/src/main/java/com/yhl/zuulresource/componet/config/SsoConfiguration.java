@@ -1,5 +1,6 @@
 package com.yhl.zuulresource.componet.config;
 
+import com.yhl.authoritycommom.entity.OAthUserDetailes;
 import com.yhl.yhlsecuritycommon.componet.web.authentication.LoginSuccessHandler;
 import com.yhl.zuulresource.componet.featur.UserDetailsAuthenticationConverter;
 import com.yhl.zuulresource.componet.featur.UserDetailsDtoPrincipalExtractor;
@@ -88,7 +89,7 @@ public class SsoConfiguration extends WebSecurityConfigurerAdapter {
 	/**
 	 * 配置一个Converter，使之可以解析token_info中的Pripical<br />
 	 * 此处将 {@link Principal}转换为一个
-	 * {@link com.yhl.zuulresource.entity.OAthUserDetailes}对象
+	 * {@link  OAthUserDetailes}对象
 	 */
 	@Bean
 	public UserAuthenticationConverter userTokenConverter() {
@@ -100,7 +101,7 @@ public class SsoConfiguration extends WebSecurityConfigurerAdapter {
 	/**
 	 * 指定一个用户信息解码器，
 	 * 将从服务器获取过来的用户信息解码为本地
-	 * {@link com.yhl.zuulresource.entity.OAthUserDetailes}
+	 * {@link OAthUserDetailes}
 	 */
 	@Bean
 	public PrincipalExtractor principalExtractor() {

@@ -12,8 +12,8 @@ import javax.persistence.*;
 @Table(name = "client_scope",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"client_id","scope"})},
         indexes = {@Index(columnList = "client_id")})
-public class ClientScope  extends BaseEntity<String> {
-
+public class ClientScope  extends BaseEntity<String> implements com.yhl.authoritycommom.entity.ClientScope {
+   private static final long serialVersionUID = 6264195683179623743L;
     @Column(name = "client_id")
     private String clientId;
 

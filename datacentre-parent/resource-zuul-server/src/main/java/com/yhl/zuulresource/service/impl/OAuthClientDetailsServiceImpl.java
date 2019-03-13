@@ -9,17 +9,19 @@ import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-@Service
+import java.util.List;
+
+@Service("OAuthClientDetailsServiceImpls")
 public class OAuthClientDetailsServiceImpl extends BaseServiceImpl<OAuthClientDetails,String> implements OAuthClientDetailsService {
     private  final String CLIENTID ="clientId";
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
        WhereCondition whereCondition =new WhereCondition();
         whereCondition.and().addEq(CLIENTID,clientId);
-        ClientDetails clientDetails =(ClientDetails)findByParams(whereCondition).getData();
+       List<ClientDetails>  clientDetails =( List<ClientDetails>)findByParams(whereCondition).getData();
         if (ObjectUtils.isEmpty(clientDetails)){
             throw new ClientRegistrationException("客户端不存在");
         }
-        return null ;
+        return clientDetails.get(0) ;
     }
 }

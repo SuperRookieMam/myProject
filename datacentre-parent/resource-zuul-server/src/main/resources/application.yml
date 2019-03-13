@@ -14,13 +14,13 @@ security:
     client:
       client-id: zuul
       client-secret: 123456
-      access-token-uri: http://localhost:8887/oauth/token
-      user-authorization-uri: http://localhost:8887/oauth/authorize
+      access-token-uri: http://localhost:8095/oauth/token
+      user-authorization-uri: http://localhost:8095/oauth/authorize
       client-authentication-scheme: form
       use-current-uri: false
       pre-established-redirect-uri: /login
     resource:      #这配配置的是服务器的地址
-      token-info-uri: 'http://127.0.0.1:8887/oauth/check_token'
+      token-info-uri: 'http://127.0.0.1:8095/oauth/check_token'
 #      user-info-uri: '@user.info.url@'     
 #    sso:
       ## 这个地址是sso校验auth_code的地址
@@ -46,6 +46,6 @@ zuul:
     uap: ## 用户服务器的代理
       path: '/u/**'
       strip-prefix: true
-      url: 'http://127.0.0.1:8887/'
+      url: 'http://127.0.0.1:8880/'
 
     

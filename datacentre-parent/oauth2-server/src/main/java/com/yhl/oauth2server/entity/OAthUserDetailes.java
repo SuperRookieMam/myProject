@@ -4,7 +4,6 @@ import com.yhl.base.baseEntity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
@@ -17,8 +16,9 @@ import java.util.Collections;
 @Setter
 @Entity
 @Table(name = "oath_user_detailes")
-public class OAthUserDetailes extends BaseEntity<String> implements UserDetails {
+public class OAthUserDetailes extends BaseEntity<String> implements com.yhl.authoritycommom.entity.OAthUserDetailes {
 
+    private static final long serialVersionUID = 9056596580975978130L;
     @Column(name = "user_name")
     private  String userName;
 
@@ -65,6 +65,16 @@ public class OAthUserDetailes extends BaseEntity<String> implements UserDetails 
     @Override
     public boolean isCredentialsNonExpired() {
         return !StringUtils.isEmpty(credentials);
+    }
+
+    @Override
+    public String getUserName() {
+        return userName;
+    }
+
+    @Override
+    public String getPassWord() {
+        return passWord;
     }
 
     @Override
