@@ -2,7 +2,7 @@ package com.yhl.zuulresource.componet.featur;
 
 
 import com.yhl.authoritycommom.entity.OAthGrantedAuthority;
-import com.yhl.zuulresource.entity.OAthUserDetailes;
+import com.yhl.authoritycommom.entity.OAthUserDetailesDto;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,7 +16,7 @@ public class UserDetailsDtoPrincipalExtractor implements PrincipalExtractor {
 
 	@Override
 	public Object extractPrincipal(Map<String, Object> map) {
-		UserDetails userDetails= new OAthUserDetailes();
+		UserDetails userDetails= new OAthUserDetailesDto();
 		// todo 在这里设置你要携带的uer信息
 		if (!Objects.isNull(map.get("authorities"))) {
 			@SuppressWarnings("unchecked")

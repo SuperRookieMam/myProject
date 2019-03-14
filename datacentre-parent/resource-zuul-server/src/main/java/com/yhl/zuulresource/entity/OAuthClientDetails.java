@@ -15,8 +15,9 @@ import java.util.*;
 @Table(name = "oauth_client_details",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"client_id"})},
         indexes = {@Index(columnList = "client_id")})
-public class OAuthClientDetails extends BaseEntity<String> implements com.yhl.authoritycommom.entity.OAuthClientDetails {
+public class OAuthClientDetails extends BaseEntity<String>   {
 
+    private static final long serialVersionUID = 2690674106372430662L;
     /**
      *必须唯一,不能为空. 用于唯一标识每一个客户端(client);
      *  在注册时必须填写(也可由服务端自动生成).
@@ -159,69 +160,4 @@ public class OAuthClientDetails extends BaseEntity<String> implements com.yhl.au
     @Column(name = "trusted")
     private  Integer trusted;
 
-
-    @Override
-    public String getClientId() {
-        return clientId;
-    }
-
-    @Override
-    public Set<String> getResourceIds() {
-        return resourceIds;
-    }
-
-    @Override
-    public boolean isSecretRequired() {
-        return this.clientSecret != null;
-    }
-
-    @Override
-    public String getClientSecret() {
-        return clientSecret;
-    }
-
-    @Override
-    public boolean isScoped() {
-        return this.scopes != null && !this.scopes.isEmpty();
-    }
-
-    @Override
-    public Set<String> getScope() {
-        return scopes;
-    }
-
-    @Override
-    public Set<String> getAuthorizedGrantTypes() {
-        return authorizedGrantTypes;
-    }
-
-    @Override
-    public Set<String> getRegisteredRedirectUri() {
-        return registeredRedirectUri;
-    }
-
-    @Override
-    public Collection<GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
-    public Integer getAccessTokenValiditySeconds() {
-        return accessTokenValiditySeconds;
-    }
-
-    @Override
-    public Integer getRefreshTokenValiditySeconds() {
-        return refreshTokenValiditySeconds;
-    }
-
-    @Override
-    public boolean isAutoApprove(String scope) {
-        return autoApprove;
-    }
-
-    @Override
-    public Map<String, Object> getAdditionalInformation() {
-        return additionalInformation;
-    }
 }

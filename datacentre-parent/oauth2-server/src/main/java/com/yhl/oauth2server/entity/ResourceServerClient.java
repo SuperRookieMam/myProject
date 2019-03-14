@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name = "resource_server_client",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"client_id","resource_id"})},
         indexes = {@Index(columnList = "client_id")})
-public class ResourceServerClient  extends BaseEntity<String> implements com.yhl.authoritycommom.entity.ResourceServerClient {
+public class ResourceServerClient  extends BaseEntity<String>  {
 
     @Column(name = "client_id")
     private String clientId;

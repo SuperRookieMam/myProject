@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Table(name = "oauth_refresh_token",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"token_id"})},
         indexes = {@Index(columnList = "token_id")})
-public class OAuthRefreshToken extends BaseEntity<String> implements com.yhl.authoritycommom.entity.OAuthRefreshToken {
+public class OAuthRefreshToken extends BaseEntity<String> {
 
     /**
      * 	该字段的值是将refresh_token的值通过MD5加密后存储的.
@@ -36,8 +36,4 @@ public class OAuthRefreshToken extends BaseEntity<String> implements com.yhl.aut
     @Column(name = "authentication")
     private String authentication;
 
-    @Override
-    public String getValue() {
-        return tokenId;
-    }
 }

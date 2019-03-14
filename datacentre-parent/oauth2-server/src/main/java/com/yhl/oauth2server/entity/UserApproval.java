@@ -16,7 +16,7 @@ import java.util.*;
 @Table(name = "user_aproval",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id","client_id","scope"})},
         indexes = {@Index(columnList = "user_id")})
-public class UserApproval  extends BaseEntity<String> implements com.yhl.authoritycommom.entity.UserApproval {
+public class UserApproval  extends BaseEntity<String> {
 
     private static final long serialVersionUID = 5194945293219450500L;
     @Column(name = "user_id", length = 50)
@@ -41,12 +41,12 @@ public class UserApproval  extends BaseEntity<String> implements com.yhl.authori
     private Date lastUpdatedAt =new Date();
 
 
-    public  static List<com.yhl.authoritycommom.entity.UserApproval> approvalToUserApproval(Collection<Approval> approvals){
-        List<com.yhl.authoritycommom.entity.UserApproval> list=new ArrayList<>();
+    public  static List< UserApproval> approvalToUserApproval(Collection<Approval> approvals){
+        List< UserApproval> list=new ArrayList<>();
         Iterator<Approval> iterator = approvals.iterator();
         while (iterator.hasNext()){
             Approval approval =iterator.next();
-            com.yhl.authoritycommom.entity.UserApproval userApproval =new UserApproval();
+            UserApproval userApproval =new UserApproval();
             userApproval.setClientId(approval.getClientId());
             userApproval.setExpiresAt(approval.getExpiresAt());
             userApproval.setLastUpdatedAt(approval.getLastUpdatedAt());
@@ -57,11 +57,11 @@ public class UserApproval  extends BaseEntity<String> implements com.yhl.authori
         return list;
     }
 
-    public  static List<Approval> userApprovalToApproval(Collection<com.yhl.authoritycommom.entity.UserApproval> userApprovals){
+    public  static List<Approval> userApprovalToApproval(Collection<UserApproval> userApprovals){
         List<Approval> list=new ArrayList<>();
-        Iterator<com.yhl.authoritycommom.entity.UserApproval> iterator = userApprovals.iterator();
+        Iterator< UserApproval> iterator = userApprovals.iterator();
         while (iterator.hasNext()){
-            com.yhl.authoritycommom.entity.UserApproval userApproval =iterator.next();
+            UserApproval userApproval =iterator.next();
             Approval approval =new Approval(
                     userApproval.getUserId(),
                     userApproval.getClientId(),

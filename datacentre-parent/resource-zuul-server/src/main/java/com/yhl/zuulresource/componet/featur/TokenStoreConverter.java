@@ -1,11 +1,11 @@
 package com.yhl.zuulresource.componet.featur;
 
 import com.yhl.authoritycommom.componet.util.SerializationUtils;
-import com.yhl.authoritycommom.entity.OAuthAccessToken;
-import com.yhl.authoritycommom.entity.OAuthRefreshToken;
 import com.yhl.baseorm.component.constant.WhereCondition;
 import com.yhl.zuulresource.dao.OAuthAccessTokenDao;
 import com.yhl.zuulresource.dao.OAuthRefreshTokenDao;
+import com.yhl.zuulresource.entity.OAuthAccessToken;
+import com.yhl.zuulresource.entity.OAuthRefreshToken;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;

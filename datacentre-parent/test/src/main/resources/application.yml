@@ -1,17 +1,25 @@
 server:
-  port: 8095
+  port: 8883
 spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: test
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://127.0.0.1:3306/yu?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&verifyServerCertificate=false&autoReconnct=true&autoReconnectForPools=true&allowMultiQueries=true
     username: root
     password: 123456
     driverClassName: com.mysql.cj.jdbc.Driver
-  application:
-    name: oauth2Server
 eureka:
   instance:
-    hostname: oauth2Server
+    hostname: test
   client:
     serviceUrl:
       defaultZone: http://127.0.0.1:8099/eureka/
+#      user-info-uri: '@user.info.url@'     
+#    sso:
+      ## 这个地址是sso校验auth_code的地址
+#      login-path: '/a/login'
+
+

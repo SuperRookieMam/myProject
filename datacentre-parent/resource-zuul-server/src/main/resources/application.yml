@@ -3,6 +3,8 @@ server:
 spring:
   main:
     allow-bean-definition-overriding: true
+  application:
+    name: zuulServer
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://127.0.0.1:3306/yu?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&useSSL=false&verifyServerCertificate=false&autoReconnct=true&autoReconnectForPools=true&allowMultiQueries=true
@@ -21,6 +23,12 @@ security:
       pre-established-redirect-uri: /login
     resource:      #这配配置的是服务器的地址
       token-info-uri: 'http://127.0.0.1:8095/oauth/check_token'
+eureka:
+  instance:
+    hostname: zuulServer
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8099/eureka/
 #      user-info-uri: '@user.info.url@'     
 #    sso:
       ## 这个地址是sso校验auth_code的地址
@@ -33,19 +41,23 @@ zuul:
 #  - cookie
 #  - set-cookie
   include-debug-header: true
+# 忽略单个服务实例：
+# ignored-services: microservice-service-provider
+# "*"表示忽略所有微服务，所有请求均不能通过服务的应用名称来访问
+# 例如：http://localhost:7000/tyrone/microservice-service-provider/provider/request/info是访问不通的
+# 如果不声明此属性，上述请求是可以访问成功的
+  ignored-services: "*"
 #  网管路由配置
   routes:
-    data: ## 数据中心的代理
-      strip-prefix: true
-      path: '/d/data/**'
-      url: 'http://127.0.0.1:8081/'
-    files: ## 文件服务器的代理
-      strip-prefix: true
-      path: '/d/files/**'
-      url: 'http://127.0.0.1:8886/files'
-    uap: ## 用户服务器的代理
-      path: '/u/**'
-      strip-prefix: true
-      url: 'http://127.0.0.1:8880/'
+#    data: ## 数据中心的代理
+#      strip-prefix: true
+#      path: '/d/data/**'
+#      url: 'http://127.0.0.1:8081/'
+#    files: ## 文件服务器的代理
+#      strip-prefix: true
+#      path: '/d/files/**'
+#      url: 'http://127.0.0.1:8886/files'
+    users: ## 用户服务器的代理
+      path: /u/**
+      serviceId: zuulServer
 
-    

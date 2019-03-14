@@ -3,13 +3,8 @@ package com.yhl.zuulresource.entity;
 import com.yhl.base.baseEntity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * 在项目中,主要操作oauth_access_token表的对象是JdbcTokenStore.java. 更多的细节请参考该类.
@@ -20,8 +15,9 @@ import java.util.Set;
 @Table(name = "oauth_access_token",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"authentication_id"})},
         indexes = {@Index(columnList = "authentication_id")})
-public class OAuthAccessToken extends BaseEntity<String> implements com.yhl.authoritycommom.entity.OAuthAccessToken {
+public class OAuthAccessToken extends BaseEntity<String> {
 
+    private static final long serialVersionUID = -5123030928910884773L;
     /**
      * 该字段的值是将access_token的值通过MD5加密后存储的.
      * */
@@ -63,44 +59,4 @@ public class OAuthAccessToken extends BaseEntity<String> implements com.yhl.auth
      * */
     @Column(name = "refresh_token")
     private  String  refreshToken;
-
-    @Override
-    public Map<String, Object> getAdditionalInformation() {
-        return new LinkedHashMap<>();
-    }
-
-    @Override
-    public Set<String> getScope() {
-        return null;
-    }
-
-    @Override
-    public OAuth2RefreshToken getRefreshToken() {
-        return null;
-    }
-
-    @Override
-    public String getTokenType() {
-        return null;
-    }
-
-    @Override
-    public boolean isExpired() {
-        return false;
-    }
-
-    @Override
-    public Date getExpiration() {
-        return null;
-    }
-
-    @Override
-    public int getExpiresIn() {
-        return 0;
-    }
-
-    @Override
-    public String getValue() {
-        return tokenId;
-    }
 }

@@ -1,11 +1,11 @@
 package com.yhl.oauth2server.componet.ouathConverter.feature;
 
 import com.yhl.authoritycommom.componet.util.SerializationUtils;
-import com.yhl.authoritycommom.entity.OAuthAccessToken;
-import com.yhl.authoritycommom.entity.OAuthRefreshToken;
 import com.yhl.baseorm.component.constant.WhereCondition;
 import com.yhl.oauth2server.dao.OAuthAccessTokenDao;
 import com.yhl.oauth2server.dao.OAuthRefreshTokenDao;
+import com.yhl.oauth2server.entity.OAuthAccessToken;
+import com.yhl.oauth2server.entity.OAuthRefreshToken;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -56,13 +56,11 @@ public class TokenStoreConverter implements TokenStore {
         whereCondition.and().addEq(TOKENID,token);
         List<OAuthAccessToken>  oAuthAccessTokens =oAuthAccessTokenDao.findByParams(whereCondition);
         if (!oAuthAccessTokens.isEmpty()){
-            OAuthAccessToken oAuthAccessToken = oAuthAccessTokens.get(0);
-            String authenticationStr= oAuthAccessToken.getAuthentication();
+            String authenticationStr= oAuthAccessTokens.get(0).getAuthentication();
             oAuth2Authentication = deserializeAuthentication(authenticationStr);
         }
         return oAuth2Authentication;
     }
-
     @Override
     @Transactional(value = "transactionManagerPrimary",rollbackFor = Exception.class)
     public void storeAccessToken(OAuth2AccessToken token, OAuth2Authentication authentication) {
@@ -74,7 +72,7 @@ public class TokenStoreConverter implements TokenStore {
         if (readAccessToken(token.getValue())!=null) {
             removeAccessToken(token.getValue());
         }
-        OAuthAccessToken oAuthAccessToken = new com.yhl.oauth2server.entity.OAuthAccessToken();
+        OAuthAccessToken oAuthAccessToken = new OAuthAccessToken();
         oAuthAccessToken.setTokenId(extractTokenKey(token.getValue()));
         oAuthAccessToken.setToken(serializeAccessToken(token));
         oAuthAccessToken.setAuthenticationId(authenticationKeyGenerator.extractKey(authentication));
@@ -95,7 +93,6 @@ public class TokenStoreConverter implements TokenStore {
         if (!oAuthAccessTokens.isEmpty()){
             OAuthAccessToken oAuthAccessToken =  oAuthAccessTokens.get(0);
             oAuth2AccessToken = deserializeAccessToken(oAuthAccessToken.getToken());
-
         }
         return oAuth2AccessToken;
     }
@@ -114,7 +111,7 @@ public class TokenStoreConverter implements TokenStore {
     @Override
     @Transactional(value = "transactionManagerPrimary",rollbackFor = Exception.class)
     public void storeRefreshToken(OAuth2RefreshToken refreshToken, OAuth2Authentication authentication) {
-        OAuthRefreshToken oAuthRefreshToken =new com.yhl.oauth2server.entity.OAuthRefreshToken();
+        OAuthRefreshToken oAuthRefreshToken =new  OAuthRefreshToken();
         oAuthRefreshToken.setTokenId(extractTokenKey(refreshToken.getValue()));
         oAuthRefreshToken.setToken(serializeRefreshToken(refreshToken));
         oAuthRefreshToken.setAuthentication(serializeAuthentication(authentication));
@@ -186,8 +183,7 @@ public class TokenStoreConverter implements TokenStore {
         whereCondition.and().addEq(AUTHENTICATIONID,key);
         List<OAuthAccessToken>  oAuthAccessTokens =oAuthAccessTokenDao.findByParams(whereCondition);
         if (oAuthAccessTokens.size()>0){
-            OAuthAccessToken oAuthAccessToken = oAuthAccessTokens.get(0);
-            String  authenticationStr  = oAuthAccessToken.getToken();
+            String  authenticationStr  = oAuthAccessTokens.get(0).getToken();
             auth2AccessToken = deserializeAccessToken(authenticationStr);
             if (auth2AccessToken != null) {
                 OAuth2Authentication oAuth2Authentication =  readAuthentication(auth2AccessToken.getValue());

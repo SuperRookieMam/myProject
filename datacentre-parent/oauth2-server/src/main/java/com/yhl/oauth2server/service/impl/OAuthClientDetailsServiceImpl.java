@@ -1,5 +1,6 @@
 package com.yhl.oauth2server.service.impl;
 
+import com.yhl.authoritycommom.entity.OAuthClientDetailsDto;
 import com.yhl.base.baseService.impl.BaseServiceImpl;
 import com.yhl.baseorm.component.constant.WhereCondition;
 import com.yhl.oauth2server.entity.OAuthClientDetails;
@@ -17,13 +18,32 @@ public class OAuthClientDetailsServiceImpl extends BaseServiceImpl<OAuthClientDe
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
         WhereCondition whereCondition =new WhereCondition();
         whereCondition.and().addEq(CLIENTID,clientId);
-        List<ClientDetails> clientDetails = (List<ClientDetails>)findByParams(whereCondition).getData();
+        List<OAuthClientDetails> clientDetails =( List<OAuthClientDetails> ) findByParams(whereCondition).getData();
         if (clientDetails.isEmpty()){
             throw new ClientRegistrationException("客户端不存在");
         }
-        com.yhl.authoritycommom.entity.OAuthClientDetails oAuthClientDetails
-                =(com.yhl.authoritycommom.entity.OAuthClientDetails ) clientDetails.get(0);
-        return   oAuthClientDetails;
+        OAuthClientDetails oAuthClientDetails =  clientDetails.get(0);
+
+        return   getOAuthClientDetailsDto( new OAuthClientDetailsDto(),  clientDetails.get(0) );
     }
+    private OAuthClientDetailsDto getOAuthClientDetailsDto(OAuthClientDetailsDto dto, OAuthClientDetails model ){
+        dto.setRefreshTokenValiditySeconds(model.getRefreshTokenValiditySeconds());
+        dto.setAccessTokenValiditySeconds(model.getAccessTokenValiditySeconds());
+        dto.setAdditionalInformation(model.getAdditionalInformation());
+        dto.setArchived(model.getArchived());
+        dto.setAuthorities(model.getAuthorities());
+        dto.setClientId(model.getClientId());
+        dto.setAutoApprove(model.isAutoApprove());
+        dto.setAuthorizedGrantTypes(model.getAuthorizedGrantTypes());
+        dto.setResourceIds(model.getResourceIds());
+        dto.setScopes(model.getScopes());
+        dto.setTrusted(model.getTrusted());
+        dto.setClientSecret(model.getClientSecret());
+        dto.setRegisteredRedirectUri(model.getRegisteredRedirectUri());
+        return dto;
+    }
+
+
+
 
 }

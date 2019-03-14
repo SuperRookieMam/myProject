@@ -37,10 +37,15 @@
             <artifactId>yhl-authority-common</artifactId>
         </dependency>
         <dependency>
-            <artifactId>oauth2-server</artifactId>
-            <groupId>com.yhl</groupId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

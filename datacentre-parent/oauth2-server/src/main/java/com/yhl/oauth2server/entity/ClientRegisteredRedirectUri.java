@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name = "client_registered_redirect_uri",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"client_id","redirect_uri"})},
         indexes = {@Index(columnList = "client_id")})
-public class ClientRegisteredRedirectUri extends BaseEntity<String>  implements com.yhl.authoritycommom.entity.ClientRegisteredRedirectUri {
+public class ClientRegisteredRedirectUri extends BaseEntity<String>   {
 
     private static final long serialVersionUID = 5659395845747258201L;
     @Column(name = "client_id", nullable = false, length = 50)

@@ -16,6 +16,8 @@
     <modules>
         <module>oauth2-server</module>
         <module>resource-zuul-server</module>
+        <module>eureka-server</module>
+        <module>test</module>
     </modules>
     <packaging>pom</packaging>
     <dependencyManagement>

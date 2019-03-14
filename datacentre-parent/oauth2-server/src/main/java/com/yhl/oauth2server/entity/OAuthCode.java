@@ -19,8 +19,9 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "oauth_code")
-public class OAuthCode   extends BaseEntity<String> implements com.yhl.authoritycommom.entity.OAuthCode {
+public class OAuthCode   extends BaseEntity<String>  {
 
+    private static final long serialVersionUID = 7086367203392700303L;
     /**
      * 存储服务端系统生成的code的值(未加密).
      * */

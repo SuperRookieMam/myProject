@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "resource_server")
-public class ResourceServer  extends BaseEntity<String> implements com.yhl.authoritycommom.entity.ResourceServer {
+public class ResourceServer  extends BaseEntity<String>  {
 
     /**
      * 资源服务器名字
